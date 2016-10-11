@@ -20,10 +20,19 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'f-3bryh)2cp%wg5z1*fauq$9!#_(z*e4u8cl5xa!@6d$f#38d%'
-
+# SECRET_KEY = 'f-3bryh)2cp%wg5z1*fauq$9!#_(z*e4u8cl5xa!@6d$f#38d%'
+from django.core.exceptions import ImproperlyConfigured
+ 
+def get_env_variable(var_name):     #tries to get the variable var_name  from the environment
+    try:
+        return os.environ[var_name]
+    except KeyError:
+        error_msg = "Set the %s environment variable" % var_name    
+        raise ImproperlyConfigured(error_msg)   #if it doesn’t find the variable var_name, it raises an ImproperlyConfigured  error. 
+ 
+SECRET_KEY = get_env_variable('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
 
 ALLOWED_HOSTS = []
 
